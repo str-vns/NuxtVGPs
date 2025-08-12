@@ -6,3 +6,10 @@ export function dateConvert(dates: string) {
 		day: 'numeric',
 	})
 }
+
+export function filterYear(year: string, datas: any[]) {
+	return datas.filter((item) => {
+		const launchYear = new Date(item.launch_date_local).getFullYear().toString()
+		return launchYear === year
+	})
+}

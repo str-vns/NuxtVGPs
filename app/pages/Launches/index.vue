@@ -21,5 +21,4 @@ import cardsList from '~/shared/cardsList.vue'
 import { useGetLaunches } from '~/api/launches'
 import { dateConvert } from '~/shared/Date'
 const launches = useGetLaunches()
-
 </script>
