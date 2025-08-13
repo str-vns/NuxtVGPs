@@ -13,3 +13,13 @@ export function filterYear(year: string, datas: any[]) {
 		return launchYear === year
 	})
 }
+
+export function sortDate(sort: string, datas: any[]) {
+	
+		return	datas.sort((a, b) => {
+				const dateA = new Date(a.launch_date_local).getTime()
+				const dateB = new Date(b.launch_date_local).getTime()
+				return sort === 'Asc' ? dateA - dateB : dateB - dateA
+			})
+
+}
