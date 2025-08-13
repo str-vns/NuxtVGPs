@@ -1,5 +1,6 @@
 <template>
-	<v-container>
+	<v-container class="mt-2">
+			<navbar />
 		<h2>
 			<v-icon icon="mdi-vuetify" />
 			Starter Template
@@ -97,8 +98,12 @@
 			</tbody>
 		</v-table>
 	</v-container>
+	<footers />
 </template>
 <script lang="ts" setup>
+import navbar from '~/shared/navbar.vue'
+import footers from '~/shared/footers.vue'
+
 const store = useCounter()
 const selection = ref(0)
 const query = gql`
