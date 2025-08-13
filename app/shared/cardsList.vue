@@ -31,9 +31,11 @@
 						v-for="(item, index) in sort"
 						:key="index"
 						@click="selectedSort = item"
- :disabled="(selectedSort === '' && item === 'Asc') || 
-             (selectedSort === 'Asc' && item === 'Asc') || 
-             (selectedSort === 'Desc' && item === 'Desc')"
+						:disabled="
+							(selectedSort === '' && item === 'Asc') ||
+							(selectedSort === 'Asc' && item === 'Asc') ||
+							(selectedSort === 'Desc' && item === 'Desc')
+						"
 					>
 						<v-list-item-title>{{ item }}</v-list-item-title>
 					</v-list-item>
@@ -42,7 +44,7 @@
 		</div>
 
 		<div v-if="pageItems.length === 0" class="text-center my-8">
-			<p>No launches found</p>
+			<p>No Information found</p>
 		</div>
 		<v-row v-else align="start" no-gutters>
 			<v-col v-for="item in pageItems" :key="item.id" cols="12" sm="4" class="pa-2 mb-4">
@@ -93,6 +95,5 @@ watch([selectedYear, selectedSort], ([newYear, newSort]) => {
 			years.splice(index, 1)
 		}
 	}
-
 })
 </script>
