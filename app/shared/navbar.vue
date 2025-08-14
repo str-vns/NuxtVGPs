@@ -34,10 +34,7 @@
 			<v-list-item
 				v-for="page in pages"
 				:key="page.name"
-				@click="
-					navigate(page.path),
-					drawer = false
-				"
+				@click="navigate(page.path), (drawer = false)"
 			>
 				<v-list-item-title :class="{ 'text-blue': $route.path === page.path }">
 					{{ page.label }}

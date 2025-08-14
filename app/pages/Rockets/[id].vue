@@ -1,97 +1,85 @@
 <template>
-	<div
-		class="page-header position-relative"
-		:style="{
-			backgroundImage: `url('https://res.cloudinary.com/diljhwf3a/image/upload/v1755065785/heic0604a_sfmtyb.jpg')`,
-			backgroundSize: 'cover',
-			backgroundPosition: 'center',
-			backgroundRepeat: 'no-repeat',
-			height: '75vh',
-		}"
-	>
-		<div class="container h-100">
-			<div class="row h-100 justify-content-center align-items-center">
-				<div class="col-lg-7 text-center text-white">
-					<h1
-						class="mb-3"
-						style="
-							display: inline-block;
-							font-weight: 1000;
-							margin-top: 200px;
-							-webkit-text-stroke: 1px black;
-							color: white;
-						"
-					>
-						{{ singleRocket.name }}
-					</h1>
+  <div class="rocket-details">
+    <!-- HEADER -->
+    <div
+      class="page-header"
+      :style="{
+        backgroundImage: `url('https://res.cloudinary.com/diljhwf3a/image/upload/v1755065785/heic0604a_sfmtyb.jpg')`
+      }"
+    >
+      <div class="header-content">
+        <h1>{{ singleRocket.name }}</h1>
+        <p class="lead">Company: {{ singleRocket.company }}</p>
+        <p class="lead">Country: {{ singleRocket.country }}</p>
+      </div>
+    </div>
 
-					<p
-						class="lead px-5"
-						style="font-weight: 800; -webkit-text-stroke: 0.8px black; color: white"
-					>
-						Company: {{ singleRocket.company }}
-					</p>
 
-					<p
-						class="lead px-5"
-						style="font-weight: 800; -webkit-text-stroke: 0.8px black; color: white"
-					>
-						Country: {{ singleRocket.country }}
-					</p>
-				</div>
-			</div>
-		</div>
+    <v-card
+      class="rocket-card mx-auto pa-6 w-50"
+    >
+      <div class="d-flex justify-end mb-3 text-center">
+        <v-btn
+          :color="isFavorite ? 'yellow' : 'primary'"
+          @click="isFavoriteHandler(singleRocket)"
+        >
+          Favorite
+          <v-icon size="20">
+            {{ isFavorite ? 'mdi-star' : 'mdi-star-outline' }}
+          </v-icon>
+        </v-btn>
+      </div>
 
-		<v-card
-			class="position-absolute start-50 translate-middle-x pa-10 w-75"
-			style="bottom: -300px; left: 13%; background-color: rgba(255, 255, 255, 0.95); height: auto"
-		>
-			<v-text style="text-align: center; display: block; max-width: 600px; margin: 0 auto">
-				{{ singleRocket.description }}
-			</v-text>
+      <span class="description">{{ singleRocket.description }}</span>
 
-			<v-text
-				class="mt-5 text-start"
-				style="text-align: center; display: block; max-width: 600px; margin: 0 auto"
-			>
-				First Flight: {{ dateConvert(singleRocket.first_flight) }}
-			</v-text>
-
-			<v-text
-				class="mt-2 text-start"
-				style="text-align: center; display: block; max-width: 600px; margin: 0 auto"
-			>
-				Height : {{ singleRocket.height.feet }} ft | {{ singleRocket.height.meters }} m
-			</v-text>
-			<v-text
-				class="mt-2 text-start"
-				style="text-align: center; display: block; max-width: 600px; margin: 0 auto"
-			>
-				Diameter : {{ singleRocket.diameter.feet }} ft | {{ singleRocket.diameter.meters }} m
-			</v-text>
-
-			<v-text
-				class="mt-2 text-start"
-				style="text-align: center; display: block; max-width: 600px; margin: 0 auto"
-			>
-				Mass : {{ singleRocket.mass.kg }} kg | {{ singleRocket.mass.lb }} lb
-			</v-text>
-
-			<v-text
-				class="mt-2 text-start"
-				style="text-align: center; display: block; max-width: 600px; margin: 0 auto"
-			>
-				Number of stages : {{ singleRocket.stages }}
-			</v-text>
-		</v-card>
-	</div>
+      <span class="info">First Flight: {{ dateConvert(singleRocket.first_flight) }}</span>
+      <span class="info">
+        Height : {{ singleRocket.height.feet }} ft | {{ singleRocket.height.meters }} m
+      </span>
+      <span class="info">
+        Diameter : {{ singleRocket.diameter.feet }} ft | {{ singleRocket.diameter.meters }} m
+      </span>
+      <span class="info">
+        Mass : {{ singleRocket.mass.kg }} kg | {{ singleRocket.mass.lb }} lb
+      </span>
+      <span class="info">Number of stages : {{ singleRocket.stages }}</span>
+    </v-card>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { useSingleRockets } from '~/api/rockets'
 import { dateConvert } from '~/shared/Date'
+import type { FavoriteItem } from '~/types/typesInfo'
 
 const route = useRoute()
 const id = route.params.id as string
 const singleRocket = useSingleRockets(id)
+const store = useFavorite()
+const rockets = ref<FavoriteItem[]>([])
+const isFavorite = ref(false)
+
+const getTypeFromRoute = (): 'rocket' | 'launch' => {
+	if (route.path.startsWith('/Rockets')) return 'rocket'
+	if (route.path.startsWith('/Launches')) return 'launch'
+	throw new Error(`Unknown type for route: ${route.path}`)
+}
+
+const type = getTypeFromRoute()
+onMounted(async () => {
+	rockets.value = (await store.getFav()) as FavoriteItem[]
+	isFavorite.value = rockets.value.some((r) => r.id === id)
+})
+
+const isFavoriteHandler = async (data: any) => {
+	if (isFavorite.value) {
+		store.removeFav(id)
+		isFavorite.value = false
+	} else {
+		store.saveFav({ id: id, type: type, data: data })
+		isFavorite.value = true
+	}
+}
 </script>
+
+<style src="../../styles/singleRocket.css" scoped/>

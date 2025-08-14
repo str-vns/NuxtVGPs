@@ -1,19 +1,19 @@
-import { filterYear, sortDate } from './Date'
+import { filterYear, sortDate, searchName } from './Date'
 
-const paginationPages = (itemLength: any[], year: string, sort: string) => {
-	console.log(sort)
+const paginationPages = (itemLength: any[], year: string, sort: string, search: string) => {
+
 	const page = ref(1)
 	const itemsPerPages = 12
 	const filterItems = filterYear(year, itemLength)
 	const datas = !year ? itemLength : filterItems
-
-	const order = sort === '' ? datas : sortDate(sort, datas)
-
+    const filtered = searchName(search, datas)
+	const order = sort === '' ? filtered : sortDate(sort, filtered)
+	
 	const totalpages = computed(() => Math.ceil(order.length / itemsPerPages))
 
 	const pageItems = computed(() => {
 		const start = (page.value - 1) * itemsPerPages
-		return datas.slice(start, start + itemsPerPages)
+		return filtered.slice(start, start + itemsPerPages)
 	})
 
 	return {
