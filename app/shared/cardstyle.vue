@@ -1,34 +1,31 @@
 <template>
-	<cardsList :items="props.items">
+	<cardsList :items="props.items" :types="props.type">
 		<template #default="{ item }">
-			<v-card rounded class="rounded-lg">
-				<v-hover v-slot="{ isHovering, props }">
-					<div v-bind="props">
-						<v-card-title>{{ item.name }}</v-card-title>
-						<v-card-subtitle>
-							<div>First Flight: {{ dateConvert(item.first_flight) }}</div>
-							<div>Company: {{ item.company }}</div>
-							<div>Country: {{ item.country }}</div>
-						</v-card-subtitle>
+			<v-card rounded class="rounded-xl">
+				<v-card-title class="d-flex align-center justify-space-between mt-2">
+					<span>{{ getItemTitle(item, type) }}</span>
 
-						<v-overlay
-							:model-value="!!isHovering"
-							class="align-center justify-center"
-							scrim="#036358"
-							contained
-						>
-							<NuxtLink :to="`Rockets/${item.id}`">
-								<v-btn variant="flat">See more info</v-btn>
-							</NuxtLink>
-						</v-overlay>
+					<v-icon v-if="type === 'favorite'" size="25" class="cursor-pointer"
+					 @click="removeFavs(item.id)">
+						{{  'mdi-star'  }}
+					</v-icon>
+				</v-card-title>
+
+				<div>
+					<v-card-subtitle>
+						<div>{{ getItemDate(item, type) }}</div>
+						<div>{{ getInfo1(item, type) }}</div>
+						<div>{{ getInfo2(item, type) }}</div>
+					</v-card-subtitle>
+					<div class="d-flex justify-end mt-2 mr-2">
+						<NuxtLink :to="`${getRouterNav(item, type)}/${item.id}`">
+							<v-btn variant="flat">See more info</v-btn>
+						</NuxtLink>
 					</div>
-				</v-hover>
+				</div>
 
-				<v-expansion-panels class="mt-6">
-					<v-expansion-panel
-						title="View Description"
-						:text="item.description ?? 'No Currently Details'"
-					/>
+				<v-expansion-panels class="mt-5">
+					<v-expansion-panel :title="getDetailsTitle(item, type)" :text="getDetails(item, type)" />
 				</v-expansion-panels>
 			</v-card>
 		</template>
@@ -36,8 +33,22 @@
 </template>
 
 <script lang="ts" setup>
+import {
+	getItemTitle,
+	getDetailsTitle,
+	getDetails,
+	getInfo2,
+	getInfo1,
+	getItemDate,
+	getRouterNav,
+} from '~/helpers/cards'
 import cardsList from '~/shared/cardsList.vue'
-import { useGetRockets } from '~/api/rockets'
-import { dateConvert } from '~/shared/Date'
-const props = defineProps<{ items: any[] }>()
+const props = defineProps<{ items: any[]; type: 'rocket' | 'launches' | 'favorite' }>()
+const type = props.type
+const removeFavorite = useFavorite()
+
+const removeFavs = async (id: string) => {
+    await removeFavorite.removeFav(id)
+}
+
 </script>
