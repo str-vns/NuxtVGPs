@@ -1,10 +1,10 @@
 <template>
-	<cardstyle :items="rocketeers"/>
-	
+	<h2 class="text-center mt-10">Rockets</h2>
+	<Cardstyle :items="rocketeers" type="rocket" />
 </template>
 
 <script lang="ts" setup>
-import cardstyle from '~/shared/cardstyle.vue'
+import Cardstyle from '~/shared/cardstyle.vue'
 import { useGetRockets } from '~/api/rockets'
 
 const rocketeers = useGetRockets()
