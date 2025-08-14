@@ -1,5 +1,5 @@
 <template>
-	<div class="d-flex justify-center align-center" style="min-height: 50vh container">
+	<div class="d-flex justify-center align-center mt-15" style="min-height: 50vh container">
 		<v-card class="pa-6 w-50" style="background-color: rgba(255, 255, 255, 0.95); border-radius: 30px">
 			<div class="d-flex justify-end mb-4">
 				<v-btn
@@ -31,10 +31,12 @@
 				<p class="mt-3">First Flight: {{ dateConvert(singleRocket.launch_date_local) }}</p>
 			</div>
 		</v-card>
+		<Chat :items="singleRocket" :type="type" />
 	</div>
 </template>
 
 <script lang="ts" setup>
+import Chat from '~/shared/chat.vue'
 import { useSingleGetLaunches } from '~/api/launches'
 import { dateConvert } from '~/shared/Date'
 import type { FavoriteItem } from '~/types/typesInfo'

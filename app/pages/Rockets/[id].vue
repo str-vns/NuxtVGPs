@@ -1,6 +1,5 @@
 <template>
   <div class="rocket-details">
-    <!-- HEADER -->
     <div
       class="page-header"
       :style="{
@@ -44,12 +43,14 @@
       </span>
       <span class="info">Number of stages : {{ singleRocket.stages }}</span>
     </v-card>
+    <Chat :items="singleRocket" :type="type" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useSingleRockets } from '~/api/rockets'
 import { dateConvert } from '~/shared/Date'
+import Chat from '~/shared/chat.vue'
 import type { FavoriteItem } from '~/types/typesInfo'
 
 const route = useRoute()
@@ -58,6 +59,7 @@ const singleRocket = useSingleRockets(id)
 const store = useFavorite()
 const rockets = ref<FavoriteItem[]>([])
 const isFavorite = ref(false)
+
 
 const getTypeFromRoute = (): 'rocket' | 'launch' => {
 	if (route.path.startsWith('/Rockets')) return 'rocket'
@@ -80,6 +82,8 @@ const isFavoriteHandler = async (data: any) => {
 		isFavorite.value = true
 	}
 }
+
+
 </script>
 
 <style src="../../styles/singleRocket.css" scoped/>

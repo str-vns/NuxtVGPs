@@ -99,7 +99,6 @@
 	</v-container>
 </template>
 <script lang="ts" setup>
-
 const store = useCounter()
 const selection = ref(0)
 const query = gql`

@@ -40,3 +40,8 @@ export interface FavoriteItem {
 	type: 'rocket' | 'launch'
 	data: RocketsInfo | LaunchInfo
 }
+
+export interface ChatMessage {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+}
