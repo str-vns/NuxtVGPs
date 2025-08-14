@@ -1,0 +1,28 @@
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 400px; 
+}
+
+.chat-messages {
+  max-height: 300px; 
+  overflow-y: auto;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.loading-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.chat-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}

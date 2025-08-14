@@ -29,19 +29,23 @@
 		</div>
 	</v-app-bar>
 
-	<v-navigation-drawer v-model="drawer" temporary class="d-md-none">
-		<v-list>
-			<v-list-item
-				v-for="page in pages"
-				:key="page.name"
-				@click="navigate(page.path), (drawer = false)"
-			>
-				<v-list-item-title :class="{ 'text-blue': $route.path === page.path }">
-					{{ page.label }}
-				</v-list-item-title>
-			</v-list-item>
-		</v-list>
-	</v-navigation-drawer>
+	<v-navigation-drawer
+  v-model="drawer"
+  temporary
+  class="transparent-drawer"
+>
+  <v-list>
+    <v-list-item v-for="page in pages" :key="page.name">
+      <v-btn
+        :to="page.path"
+        class="menu-button"
+        block
+      >
+        {{ page.label }}
+      </v-btn>
+    </v-list-item>
+  </v-list>
+</v-navigation-drawer>
 </template>
 
 <script setup>
@@ -54,9 +58,6 @@ const pages = [
 	{ name: 'favorite', label: 'Favorite', path: '/Favorite' },
 ]
 
-function navigate(path) {
-	window.location.href = path
-}
 </script>
 
 <style>
@@ -70,5 +71,26 @@ function navigate(path) {
 
 .shadow-app-bar {
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.transparent-drawer {
+  background-color: transparent !important; 
+  box-shadow: none !important;              
+  border: none !important;  
+  margin-top: 3%;   
+  margin-left: 2%             
+}
+
+.transparent-drawer .v-navigation-drawer__content {
+  background-color: transparent !important; 
+}
+
+.transparent-drawer .v-overlay__scrim {
+  background-color: transparent !important; 
+}
+
+.menu-button {
+  margin: 5px 0; 
+  border-radius: 12px; 
 }
 </style>
