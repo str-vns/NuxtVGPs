@@ -99,8 +99,6 @@
 	</v-container>
 </template>
 <script lang="ts" setup>
-import navbar from '~/shared/navbar.vue'
-import footers from '~/shared/footers.vue'
 
 const store = useCounter()
 const selection = ref(0)
