@@ -1,0 +1,56 @@
+.button-design {
+	background-color: #393e46;
+	color: #eeeeee;
+}
+
+.button-design:hover {
+	background-color: #222831;
+	color: #00adb5;
+}
+
+.my-pagination .v-pagination__item--active {
+	background-color: #393e46 !important;
+	color: #eeeeee !important;
+}
+
+.my-pagination .v-pagination__item {
+	color: #222831;
+}
+
+.my-pagination .v-pagination__item:hover {
+	background-color: #eeeeee;
+}
+
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+	transition: all 0.5s ease;
+}
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+	opacity: 0;
+	transform: translateX(50px);
+}
+.fade-slide-enter-to,
+.fade-slide-leave-from {
+	opacity: 1;
+	transform: translateX(0);
+}
+
+@keyframes fadeInOut {
+	0% {
+		opacity: 0;
+		transform: translateX(50px) translateY(-50%);
+	}
+	25% {
+		opacity: 1;
+		transform: translateX(0) translateY(-50%);
+	}
+	75% {
+		opacity: 1;
+		transform: translateX(0) translateY(-50%);
+	}
+	100% {
+		opacity: 0;
+		transform: translateX(50px) translateY(-50%);
+	}
+}

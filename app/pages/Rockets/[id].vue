@@ -1,50 +1,59 @@
 <template>
-  <div class="rocket-details">
-    <div
-      class="page-header"
-      :style="{
-        backgroundImage: `url('https://res.cloudinary.com/diljhwf3a/image/upload/v1755065785/heic0604a_sfmtyb.jpg')`
-      }"
-    >
-      <div class="header-content">
-        <h1>{{ singleRocket.name }}</h1>
-        <p class="lead">Company: {{ singleRocket.company }}</p>
-        <p class="lead">Country: {{ singleRocket.country }}</p>
-      </div>
-    </div>
+	<div class="rocket-details d-flex justify-center mt-12">
+		<v-card
+			class="rocket-card mx-auto pa-6"
+			elevation="12"
+			:style="{
+				backgroundImage: `url('https://res.cloudinary.com/diljhwf3a/image/upload/v1755065785/heic0604a_sfmtyb.jpg')`,
+			}"
+		>
+			<div class="overlay"></div>
 
+			<div class="d-flex justify-end mb-4" style="position: relative; z-index: 2">
+				<v-btn
+					:color="isFavorite ? '#00ADB5' : '#EEEEEE'"
+					class="favorite-btn"
+					@click="isFavoriteHandler(singleRocket)"
+				>
+					<v-icon left size="20">
+						{{ isFavorite ? 'mdi-star' : 'mdi-star-outline' }}
+					</v-icon>
+					Favorite
+				</v-btn>
+			</div>
 
-    <v-card
-      class="rocket-card mx-auto pa-6 w-50"
-    >
-      <div class="d-flex justify-end mb-3 text-center">
-        <v-btn
-          :color="isFavorite ? 'yellow' : 'primary'"
-          @click="isFavoriteHandler(singleRocket)"
-        >
-          Favorite
-          <v-icon size="20">
-            {{ isFavorite ? 'mdi-star' : 'mdi-star-outline' }}
-          </v-icon>
-        </v-btn>
-      </div>
+			<div class="rocket-info text-center" style="position: relative; z-index: 2">
+				<h1 class="mission-title">{{ singleRocket.name }}</h1>
+				<p class="lead">Company: {{ singleRocket.company }}</p>
+				<p class="lead">Country: {{ singleRocket.country }}</p>
 
-      <span class="description">{{ singleRocket.description }}</span>
+				<p class="description">{{ singleRocket.description }}</p>
 
-      <span class="info">First Flight: {{ dateConvert(singleRocket.first_flight) }}</span>
-      <span class="info">
-        Height : {{ singleRocket.height.feet }} ft | {{ singleRocket.height.meters }} m
-      </span>
-      <span class="info">
-        Diameter : {{ singleRocket.diameter.feet }} ft | {{ singleRocket.diameter.meters }} m
-      </span>
-      <span class="info">
-        Mass : {{ singleRocket.mass.kg }} kg | {{ singleRocket.mass.lb }} lb
-      </span>
-      <span class="info">Number of stages : {{ singleRocket.stages }}</span>
-    </v-card>
-    <Chat :items="singleRocket" :type="type" />
-  </div>
+				<p class="info">
+					<strong>First Flight:</strong>
+					{{ dateConvert(singleRocket.first_flight) }}
+				</p>
+				<p class="info">
+					<strong>Height:</strong>
+					{{ singleRocket.height.feet }} ft | {{ singleRocket.height.meters }} m
+				</p>
+				<p class="info">
+					<strong>Diameter:</strong>
+					{{ singleRocket.diameter.feet }} ft | {{ singleRocket.diameter.meters }} m
+				</p>
+				<p class="info">
+					<strong>Mass:</strong>
+					{{ singleRocket.mass.kg }} kg | {{ singleRocket.mass.lb }} lb
+				</p>
+				<p class="info">
+					<strong>Stages:</strong>
+					{{ singleRocket.stages }}
+				</p>
+			</div>
+		</v-card>
+
+		<Chat :items="singleRocket" :type="type" />
+	</div>
 </template>
 
 <script lang="ts" setup>
@@ -59,7 +68,6 @@ const singleRocket = useSingleRockets(id)
 const store = useFavorite()
 const rockets = ref<FavoriteItem[]>([])
 const isFavorite = ref(false)
-
 
 const getTypeFromRoute = (): 'rocket' | 'launch' => {
 	if (route.path.startsWith('/Rockets')) return 'rocket'
@@ -82,8 +90,6 @@ const isFavoriteHandler = async (data: any) => {
 		isFavorite.value = true
 	}
 }
-
-
 </script>
 
-<style src="../../styles/singleRocket.css" scoped/>
+<style src="../../styles/singleRocket.css" scoped />

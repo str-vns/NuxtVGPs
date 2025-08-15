@@ -1,22 +1,25 @@
 <template>
 	<v-container class="pa-2">
 		<div class="text-center">
-			<v-row align="center" justify="center" dense>
-				<v-col cols="12" sm="4" md="3">
+			<v-row class="mb-2 justify-center">
+				<v-col cols="12" sm="6" md="7" class="d-flex justify-end">
 					<v-text-field
+						class="search-design"
 						v-model="search"
 						label="Search"
 						prepend-inner-icon="mdi-magnify"
-						variant="outlined"
 						hide-details
 						single-line
+						density="compact"
+						rounded="pill"
+						variant="solo"
 					/>
 				</v-col>
 
-				<v-col cols="12" sm="3" md="2">
-					<v-menu open-on-hover>
+				<v-col cols="12" sm="6" md="3" class="d-flex justify-start">
+					<v-menu transition="fab-transition">
 						<template v-slot:activator="{ props }">
-							<v-btn color="primary" v-bind="props">
+							<v-btn v-bind="props" class="button-design mr-2">
 								{{
 									selectedYear === 'Remove' || selectedYear === ''
 										? 'Select Year'
@@ -34,12 +37,10 @@
 							</v-list-item>
 						</v-list>
 					</v-menu>
-				</v-col>
 
-				<v-col cols="12" sm="3" md="2">
-					<v-menu open-on-hover>
+					<v-menu transition="fab-transition">
 						<template v-slot:activator="{ props }">
-							<v-btn color="primary" v-bind="props">
+							<v-btn class="button-design" v-bind="props">
 								{{ selectedSort === '' ? 'Asc' : selectedSort }}
 							</v-btn>
 						</template>
@@ -60,30 +61,27 @@
 					</v-menu>
 				</v-col>
 			</v-row>
-			<div
-				v-if="props.types === 'favorite'"
-				class="d-flex align-center justify-end mt-2 mb-2"
-				@click="clearFavorites"
-			>
-				<v-btn class="rounded-lg">Clear Favorites</v-btn>
-			</div>
 		</div>
-
-		<div v-if="loading || pageItems === null" class="text-center my-8">
+		<div v-if="props.types === 'favorite'" class="d-flex mt-2 mb-2 justify-end">
+			<v-btn class="rounded-lg button-design" @click="clearFavorites">Clear Favorites</v-btn>
+		</div>
+		<div v-if="loading" class="text-center my-8">
 			<v-progress-circular indeterminate color="primary" size="50" />
 		</div>
 
-		<div v-else-if="!loading && pageItems.length === 0" class="text-center my-8">
-  <p v-if="props.types === 'favorite'">No favorites yet</p>
-  <p v-else-if="props.types === 'rocket'">No Rockets found</p>
-  <p v-else>No Launches found</p>
-</div>
+		<div v-else-if="props.items && pageItems.length === 0" class="text-center my-8">
+			<p v-if="props.types === 'favorite'">No favorites yet</p>
+			<p v-else-if="props.types === 'rocket'">No Rockets found</p>
+			<p v-else>No Launches found</p>
+		</div>
 
-		<v-row v-else align="start" no-gutters>
-			<v-col v-for="item in pageItems" :key="item.id" cols="12" sm="4" class="pa-2 mb-4">
-				<slot :item="item" />
-			</v-col>
-		</v-row>
+		<transition name="fade-slide" mode="out-in">
+			<v-row v-if="pageItems.length" :key="page" align="start" no-gutters>
+				<v-col v-for="item in pageItems" :key="item.id" cols="12" sm="4" class="pa-2 mb-4">
+					<slot :item="item" />
+				</v-col>
+			</v-row>
+		</transition>
 
 		<v-pagination
 			v-if="!loading && pageItems.length > 0"
@@ -102,59 +100,71 @@ const selectedYear = ref('')
 const selectedSort = ref('')
 const years: string[] = []
 const sort: string[] = ['Asc', 'Desc']
-const props = defineProps<{ items: any[], types: string}>()
+const props = defineProps<{ items: any[]; types: string }>()
 const page = ref(1)
 const totalpages = ref(1)
 const pageItems = ref<any[]>([])
 const loading = ref(true)
 const search = ref('')
 
+for (let i = 2022; i >= 2006; i--) years.push(i.toString())
 
-for (let i = 2025; i >= 2001; i--) years.push(i.toString())
+function updatePagination() {
+	loading.value = true
+	if (!props.items || props.items.length === 0) {
+		pageItems.value = []
+		totalpages.value = 1
+		loading.value = false
+		return
+	}
 
-function updatePagination(year: string, sort: string, search: string) {
-  loading.value = true
-  if (!props.items) {
-    pageItems.value = []
-    totalpages.value = 1
-    page.value = 1
-    loading.value = false
-    return
-  }
+	const { totalpages: t, pageItems: items } = paginationPages(
+		page,
+		props.items,
+		selectedYear.value,
+		selectedSort.value,
+		search.value,
+	)
 
-  const { page: p, totalpages: t, pageItems: items } = paginationPages(props.items, year, sort, search)
-
-  page.value = p.value
-  totalpages.value = t.value
-  pageItems.value = items.value
-  loading.value = false
+	totalpages.value = t.value
+	pageItems.value = items.value
+	loading.value = false
 }
 
 watch(
 	() => props.items,
-	(items) => {
-	
-		loading.value = true
-		updatePagination(selectedYear.value, selectedSort.value, search.value)
-		loading.value = false
+	() => {
+		page.value = 1
+		updatePagination()
 	},
 	{ immediate: true },
 )
 
-watch([selectedYear, selectedSort, search], ([newYear, newSort, newSearch]) => {
-	updatePagination(newYear, newSort, newSearch)
+watch([selectedYear, selectedSort, search, page], () => {
+	loading.value = true
+	if (
+		page.value !== 1 &&
+		(selectedYear.value !== selectedYear.value ||
+			selectedSort.value !== selectedSort.value ||
+			search.value !== search.value)
+	) {
+		page.value = 1
+	}
+	updatePagination()
 
-	if (newYear !== '') {
+	if (selectedYear.value !== '') {
 		if (!years.includes('Remove')) years.unshift('Remove')
 	} else {
 		const index = years.indexOf('Remove')
 		if (index !== -1) years.splice(index, 1)
 	}
-}) 
+})
 
-const emit = defineEmits<{ (e: 'clear'): void }>() 
+const emit = defineEmits<{ (e: 'clear'): void }>()
 
-const clearFavorites = async () => { emit('clear')
-
- }
+const clearFavorites = async () => {
+	emit('clear')
+}
 </script>
+
+<style src="../styles/list.css" scoped />

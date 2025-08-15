@@ -4,6 +4,7 @@ export const GET_LAUNCHES = gql`
 			id
 			mission_name
 			launch_date_local
+			launch_success
 			launch_site {
 				site_id
 				site_name
@@ -23,6 +24,7 @@ export const GET_SINGLE_LAUNCHES = gql`
 			id
 			mission_name
 			launch_date_local
+			launch_success
 			launch_site {
 				site_id
 				site_name

@@ -1,23 +1,31 @@
 import { filterYear, sortDate, searchName } from './Date'
 
-const paginationPages = (itemLength: any[], year: string, sort: string, search: string) => {
-
-	const page = ref(1)
+const paginationPages = (
+	page: Ref<number>,
+	itemLength: any[],
+	year: string,
+	sort: string,
+	search: string,
+) => {
 	const itemsPerPages = 12
-	const filterItems = filterYear(year, itemLength)
+
+	const filterItems = filterYear(year, itemLength) || []
+
 	const datas = !year ? itemLength : filterItems
-    const filtered = searchName(search, datas)
-	const order = sort === '' ? filtered : sortDate(sort, filtered)
-	
-	const totalpages = computed(() => Math.ceil(order.length / itemsPerPages))
+
+	const filtered = searchName(search, datas)
+
+	const sortedAndFilteredItems = sort === '' ? filtered : sortDate(sort, filtered)
+
+	const totalpages = computed(() => Math.ceil(sortedAndFilteredItems.length / itemsPerPages))
 
 	const pageItems = computed(() => {
 		const start = (page.value - 1) * itemsPerPages
-		return filtered.slice(start, start + itemsPerPages)
+		const end = start + itemsPerPages
+		return sortedAndFilteredItems.slice(start, end)
 	})
 
 	return {
-		page,
 		totalpages,
 		pageItems,
 	}

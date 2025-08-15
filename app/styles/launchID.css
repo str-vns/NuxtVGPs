@@ -1,0 +1,61 @@
+.launch-card {
+	width: 380px;
+	border-radius: 20px;
+	background-color: #393e46;
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+	transition:
+		transform 0.3s ease,
+		box-shadow 0.3s ease;
+}
+.launch-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35);
+}
+
+.favorite-btn {
+	font-weight: bold;
+	border-radius: 12px;
+	padding: 6px 16px;
+	text-transform: none;
+	transition: transform 0.2s ease;
+}
+
+.favorite-btn:hover {
+	transform: scale(1.05);
+	cursor: pointer;
+}
+
+.status-chip {
+	font-weight: 600;
+	color: #eeeeee;
+	text-transform: uppercase;
+}
+
+.mission-title {
+	font-size: 1.8rem;
+	font-weight: 700;
+	margin-bottom: 8px;
+	color: #00adb5;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.info-text {
+	font-size: 0.95rem;
+	font-weight: 500;
+	color: #eeeeee;
+	margin: 2px 0;
+}
+
+.highlight {
+	font-weight: 700;
+	color: #00adb5;
+}
+
+.details-section {
+	max-width: 420px;
+}
+
+.details-text {
+	font-size: 0.9rem;
+	color: #eeeeee;
+}

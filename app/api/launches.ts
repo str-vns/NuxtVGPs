@@ -21,6 +21,7 @@ export function useSingleGetLaunches(id: string) {
 				id: '',
 				mission_name: '',
 				launch_date_local: '',
+				launch_success: '',
 				launch_site: {
 					site_id: '',
 					site_name: '',

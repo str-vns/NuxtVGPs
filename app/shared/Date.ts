@@ -10,6 +10,9 @@ export function dateConvert(dates: string) {
 }
 
 export function filterYear(year: string, datas: any[]) {
+	if (!datas) {
+		return datas
+	}
 	return datas.filter((item) => {
 		const filt = (item as FavoriteItem).data ? (item as FavoriteItem).data : item
 		const launchYear = new Date(filt.launch_date_local || filt.first_flight).getFullYear().toString()
@@ -18,6 +21,9 @@ export function filterYear(year: string, datas: any[]) {
 }
 
 export function sortDate(sort: string, datas: any[]) {
+	if (!datas) {
+		return datas
+	}
 	return datas.sort((a, b) => {
 		const itemA = (a as FavoriteItem).data ? (a as FavoriteItem).data : a
 		const itemB = (b as FavoriteItem).data ? (b as FavoriteItem).data : b
@@ -34,7 +40,9 @@ export function sortDate(sort: string, datas: any[]) {
 }
 
 export function searchName(search: string, datas: any[]) {
-	console.log(search)
+	if (!datas) {
+		return datas
+	}
 	return datas.filter((item) => {
 		const filter = (item as FavoriteItem).data ? (item as FavoriteItem).data : item
 		const searchData = filter.name || filter.mission_name || ''

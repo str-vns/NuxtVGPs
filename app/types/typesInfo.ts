@@ -24,6 +24,7 @@ export interface LaunchInfo {
 	id: string
 	mission_name: string
 	launch_date_local: string
+	launch_success: string
 	launch_site: {
 		site_id: string
 		site_name: string
@@ -42,6 +43,6 @@ export interface FavoriteItem {
 }
 
 export interface ChatMessage {
-  role: 'system' | 'user' | 'assistant';
-  content: string;
+	role: 'system' | 'user' | 'assistant'
+	content: string
 }
