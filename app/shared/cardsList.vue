@@ -140,25 +140,34 @@ watch(
 	{ immediate: true },
 )
 
-watch([selectedYear, selectedSort, search, page], () => {
-	loading.value = true
-	if (
-		page.value !== 1 &&
-		(selectedYear.value !== selectedYear.value ||
-			selectedSort.value !== selectedSort.value ||
-			search.value !== search.value)
-	) {
-		page.value = 1
-	}
-	updatePagination()
+watch(
+    [selectedYear, selectedSort, search, page],
+    ([newYear, newSort, newSearch, newPage], [oldYear, oldSort, oldSearch, oldPage]) => {
+        console.log('Watcher triggered for filter, sort, search, or page change.')
 
-	if (selectedYear.value !== '') {
-		if (!years.includes('Remove')) years.unshift('Remove')
-	} else {
-		const index = years.indexOf('Remove')
-		if (index !== -1) years.splice(index, 1)
-	}
-})
+        const filtersChanged = newYear !== oldYear || newSort !== oldSort || newSearch !== oldSearch
+
+        if (filtersChanged && newPage !== 1) {
+            console.log('Filters changed, resetting page to 1.')
+            page.value = 1
+            updatePagination()
+        } else {
+            console.log('Page changed or no filters changed. Updating pagination.')
+            updatePagination()
+        }
+
+        if (newYear !== '') {
+            if (!years.includes('Remove')) {
+                years.unshift('Remove')
+            }
+        } else {
+            const index = years.indexOf('Remove')
+            if (index !== -1) {
+                years.splice(index, 1)
+            }
+        }
+    }
+)
 
 const emit = defineEmits<{ (e: 'clear'): void }>()
 
