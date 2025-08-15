@@ -10,17 +10,13 @@ const store = useFavorite()
 const { favoriteList } = storeToRefs(store)
 
 const rockets = favoriteList
-console.log(rockets)
+
 const loadFavorites = async () => {
 	await store.getFav()
 }
 
 onMounted(() => {
 	loadFavorites()
-})
-
-watchEffect(() => {
-	console.log('Favorites changed:', favoriteList.value)
 })
 
 const handleClear = async () => {

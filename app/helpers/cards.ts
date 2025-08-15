@@ -19,15 +19,15 @@ export function getItemDate(
 	item: RocketsInfo | LaunchInfo | FavoriteItem,
 	type: 'rocket' | 'launches' | 'favorite',
 ) {
-	if (type === 'rocket') return `First Flight: ${dateConvert((item as RocketsInfo).first_flight)}`
+	if (type === 'rocket') return `First Flight: ${dateConvert((item as RocketsInfo).first_flight) ?? ''}`
 	if (type === 'launches')
 		return `Launch Date: ${dateConvert((item as LaunchInfo).launch_date_local ?? '').toLocaleString()}`
 	if (type === 'favorite') {
 		const fav = item as FavoriteItem
 		const data = fav.data
 		return fav.type === 'rocket'
-			? `First Flight: ${dateConvert((item as RocketsInfo).first_flight)}`
-			: `Launch Date: ${dateConvert((item as LaunchInfo).launch_date_local ?? '').toLocaleString()}`
+			? `First Flight: ${dateConvert((data as RocketsInfo).first_flight) ?? ''}`
+			: `Launch Date: ${dateConvert((data as LaunchInfo).launch_date_local ?? '').toLocaleString()}`
 	}
 	return ''
 }

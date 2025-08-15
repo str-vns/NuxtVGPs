@@ -1,0 +1,49 @@
+.text-blue {
+	color: #222831;
+}
+.top-margin {
+	margin-top: 12px;
+	border-radius: 8px;
+}
+
+.shadow-app-bar {
+	background-color: #393e46 !important;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.transparent-drawer {
+	background-color: transparent !important;
+	box-shadow: none !important;
+	border: none !important;
+	margin-top: 3%;
+	margin-left: 1%;
+}
+
+.transparent-drawer .v-navigation-drawer__content {
+	background-color: transparent !important;
+}
+
+.transparent-drawer .v-overlay__scrim {
+	background-color: transparent !important;
+}
+
+.menu-button {
+	margin: 5px 0;
+	border-radius: 12px;
+}
+
+.nav-text-black {
+	color: #222831;
+}
+
+.nav-background-black {
+	background-color: #393e46 !important;
+}
+
+.nav-text {
+	background-color: #00adb5;
+}
+
+.nav-text-white {
+	color: #eeeeee;
+}

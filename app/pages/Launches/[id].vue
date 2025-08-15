@@ -1,36 +1,40 @@
 <template>
-	<div class="d-flex justify-center align-center mt-15" style="min-height: 50vh container">
-		<v-card class="pa-6 w-50" style="background-color: rgba(255, 255, 255, 0.95); border-radius: 30px">
-			<div class="d-flex justify-end mb-4">
+	<div class="d-flex justify-center align-center mt-12">
+		<v-card class="launch-card pa-6 mb-10" elevation="12">
+			<div class="d-flex justify-between align-center mb-4">
 				<v-btn
-					:color="isFavorite ? 'yellow' : 'primary'"
-					class="text-center"
+					:color="isFavorite ? '#00ADB5' : '#EEEEEE'"
+					class="favorite-btn"
 					@click="isFavoriteHandler(singleRocket)"
 				>
-					Favorite
-					<v-icon size="20">
+					<v-icon left size="20" :color="isFavorite ? '#222831' : '#222831'">
 						{{ isFavorite ? 'mdi-star' : 'mdi-star-outline' }}
 					</v-icon>
+					Favorite
 				</v-btn>
 			</div>
 
-			<div class="text-center mb-5">
-				<h1 class="mb-3 display-4 text-stroke">
-					{{ singleRocket.mission_name }}
-				</h1>
-
-				<p class="lead font-weight-bold text-stroke">
-					Company: {{ singleRocket?.launch_site?.site_name }}
+			<div class="text-center mb-6">
+				<h1 class="mission-title">{{ singleRocket.mission_name }}</h1>
+				<p class="info-text">
+					Site:
+					<span class="highlight">{{ singleRocket?.launch_site?.site_name }}</span>
 				</p>
-
-				<p class="lead font-weight-bold text-stroke">Rocket: {{ singleRocket.rocket.rocket_name }}</p>
+				<p class="info-text">
+					Rocket:
+					<span class="highlight">{{ singleRocket.rocket.rocket_name }}</span>
+				</p>
+				<p class="info-text">
+					Launch Date:
+					<span class="highlight">{{ dateConvert(singleRocket.launch_date_local) }}</span>
+				</p>
 			</div>
 
-			<div class="text-center mx-auto" style="max-width: 600px">
-				<p>{{ singleRocket.details ?? 'No details available' }}</p>
-				<p class="mt-3">First Flight: {{ dateConvert(singleRocket.launch_date_local) }}</p>
+			<div class="details-section text-center mx-auto">
+				<p class="details-text">{{ singleRocket.details ?? 'No details available' }}</p>
 			</div>
 		</v-card>
+
 		<Chat :items="singleRocket" :type="type" />
 	</div>
 </template>
@@ -71,13 +75,4 @@ const isFavoriteHandler = async (data: any) => {
 }
 </script>
 
-<style scoped>
-.text-stroke {
-	-webkit-text-stroke: 1px black;
-	color: white;
-}
-
-.font-weight-bold {
-	font-weight: 800;
-}
-</style>
+<style src="../../styles/launchID.css" scoped />

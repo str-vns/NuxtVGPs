@@ -1,0 +1,31 @@
+.card-background {
+	background-color: #222831;
+	color: #eeeeee;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+.card-expansion {
+	background-color: #393e46;
+	color: #eeeeee;
+}
+.card-expansion :hover {
+	background-color: #222831;
+	color: #00adb5;
+}
+
+.text-button.v-btn {
+	background-color: #222831;
+	color: #eeeeee;
+}
+
+.text-button.v-btn:hover {
+	background-color: #393e46 !important;
+	color: #00adb5 !important;
+}
+
+.stars-design.v-icon {
+	color: #eeeeee;
+}
+
+.stars-design.v-icon:hover {
+	color: #00adb5;
+}

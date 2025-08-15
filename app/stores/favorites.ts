@@ -12,7 +12,6 @@ export const useFavorite = defineStore('rocket', {
 	},
 	actions: {
 		saveFav(item: FavoriteItem) {
-			console.log(item)
 			this.favoriteList.push(item)
 			storageDB('persistDb', item)
 		},

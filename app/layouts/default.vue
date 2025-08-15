@@ -1,7 +1,7 @@
 <template>
 	<v-app>
 		<Navbar />
-		<v-main>
+		<v-main class="white-background">
 			<slot />
 		</v-main>
 
@@ -10,13 +10,15 @@
 </template>
 <script>
 import Footers from '~/shared/footers.vue'
-import Navbar from '~/shared/navbar.vue';
+import Navbar from '~/shared/navbar.vue'
 
 export default {
 	name: 'DefaultLayout',
 	components: {
 		Footers,
-		Navbar
-	}
+		Navbar,
+	},
 }
 </script>
+
+<style src="../styles/color.css" scoped />
